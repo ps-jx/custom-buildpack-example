@@ -1,0 +1,33 @@
+
+expose:
+  Annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: hook-succeeded
+  config:
+    exposer: Ingress
+    http: true
+    tlsacme: false
+
+cleanup:
+  Args:
+    - --cleanup
+  Annotations:
+    helm.sh/hook: pre-delete
+    helm.sh/hook-delete-policy: hook-succeeded
+
+mysql:
+  mysqlUser: mysqluser
+  mysqlPassword: mysqlPassword
+  mysqlDatabase: preview_database
+
+preview:
+  image:
+    repository:
+    tag:
+    pullPolicy: IfNotPresent
+  env:
+    MYSQL_HOST: preview-mysql
+    MYSQL_PORT: 3306
+    MYSQL_USER: testuser
+    MYSQL_PASSWORD: testuserpass
+    MYSQL_DATABASE: preview_database
